@@ -90,6 +90,10 @@ class MavlinkRepository(
         _telemetryState.update { it.copy(batteryPercent = value.coerceIn(0, 100)) }
     }
 
+    override fun updateArmed(value: Boolean) {
+        _telemetryState.update { it.copy(isArmed = value) }
+    }
+
     private fun startTelemetryLoop() {
         telemetryJob = repositoryScope.launch {
             launch {

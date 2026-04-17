@@ -49,44 +49,73 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <RadioGroup
+                    android:id="@+id/modeRadioGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/local_port_hint">
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/localPortInput"
-                        android:layout_width="match_parent"
+                    <RadioButton
+                        android:id="@+id/radioProd"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:checked="true"
+                        android:text="@string/mode_prod" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                    <RadioButton
+                        android:id="@+id/radioMock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="@string/mode_mock" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/networkInputsGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="@string/remote_host_hint">
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/remoteHostInput"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textUri" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginTop="16dp"
+                        android:hint="@string/local_port_hint">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="@string/remote_port_hint">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/localPortInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/remotePortInput"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/remote_host_hint">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/remoteHostInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textUri" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/remote_port_hint">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/remotePortInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/connectionStatusText"
@@ -104,12 +133,27 @@
                     android:layout_marginTop="8dp"
                     tools:text="送信先のGCSホストとポートを入力して接続してください。" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/connectButton"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/connect_button" />
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/connectButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/connect_button" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/blePairingButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="@string/ble_pairing_button" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -138,7 +182,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    tools:text="local:14560 -> 10.0.2.2:14550" />
+                    tools:text="local:14560 -> 192.168.3.11:14540" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/disconnectButton"
@@ -220,6 +264,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:text="@string/arm_label"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/armValueText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        tools:text="DISARM" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/armSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="@string/latest_command_label"
                     android:textStyle="bold" />
 
@@ -245,5 +316,63 @@
                     tools:text="まだ受信コマンドはありません" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bleCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ble_title"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/ble_state_label"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bleStateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    tools:text="停止中" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/ble_device_label"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bleDeviceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    tools:text="未接続" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bleToggleButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="アドバタイズ開始" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 </ScrollView>

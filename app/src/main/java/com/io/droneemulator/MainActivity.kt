@@ -1,9 +1,14 @@
 package com.io.droneemulator
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -19,7 +24,15 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: DroneEmulatorViewModel by viewModels {
-        DroneEmulatorViewModel.Factory()
+        DroneEmulatorViewModel.Factory(application)
+    }
+
+    private val blePermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions(),
+    ) { grants ->
+        if (grants.values.all { it }) {
+            viewModel.toggleBle()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,32 +54,37 @@ class MainActivity : AppCompatActivity() {
     private fun bindInputs() = with(binding) {
         connectButton.setOnClickListener { viewModel.connect() }
         disconnectButton.setOnClickListener { viewModel.disconnect() }
+        blePairingButton.setOnClickListener {
+            bleCard.isVisible = !bleCard.isVisible
+        }
+
+        modeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.onMockModeChanged(checkedId == R.id.radioMock)
+        }
 
         localPortInput.doAfterTextChanged { text ->
-            if (localPortInput.hasFocus()) {
-                viewModel.onLocalPortChanged(text?.toString().orEmpty())
-            }
+            if (localPortInput.hasFocus()) viewModel.onLocalPortChanged(text?.toString().orEmpty())
         }
         remoteHostInput.doAfterTextChanged { text ->
-            if (remoteHostInput.hasFocus()) {
-                viewModel.onRemoteHostChanged(text?.toString().orEmpty())
-            }
+            if (remoteHostInput.hasFocus()) viewModel.onRemoteHostChanged(text?.toString().orEmpty())
         }
         remotePortInput.doAfterTextChanged { text ->
-            if (remotePortInput.hasFocus()) {
-                viewModel.onRemotePortChanged(text?.toString().orEmpty())
-            }
+            if (remotePortInput.hasFocus()) viewModel.onRemotePortChanged(text?.toString().orEmpty())
         }
 
         altitudeSlider.addOnChangeListener { _, value, fromUser ->
-            if (fromUser) {
-                viewModel.setAltitude(value)
-            }
+            if (fromUser) viewModel.setAltitude(value)
         }
         batterySlider.addOnChangeListener { _, value, fromUser ->
-            if (fromUser) {
-                viewModel.setBattery(value)
-            }
+            if (fromUser) viewModel.setBattery(value)
+        }
+
+        armSwitch.setOnCheckedChangeListener { _, _ ->
+            viewModel.toggleArm()
+        }
+
+        bleToggleButton.setOnClickListener {
+            requestBlePermissionsOrToggle()
         }
     }
 
@@ -83,6 +101,12 @@ class MainActivity : AppCompatActivity() {
     private fun render(state: DroneEmulatorUiState) = with(binding) {
         connectionCard.isVisible = state.connection.isVisible
         mainCard.isVisible = state.main.isVisible
+
+        networkInputsGroup.isVisible = state.connection.showNetworkInputs
+        val targetRadioId = if (state.connection.isMockMode) R.id.radioMock else R.id.radioProd
+        if (modeRadioGroup.checkedRadioButtonId != targetRadioId) {
+            modeRadioGroup.check(targetRadioId)
+        }
 
         syncText(localPortInput, state.connection.localPortText)
         syncText(remoteHostInput, state.connection.remoteHostText)
@@ -103,14 +127,45 @@ class MainActivity : AppCompatActivity() {
         }
         gpsValueText.text = state.main.gpsText
         attitudeValueText.text = state.main.attitudeText
+
+        armValueText.text = state.main.armText
+        if (armSwitch.isChecked != state.main.isArmed) {
+            armSwitch.setOnCheckedChangeListener(null)
+            armSwitch.isChecked = state.main.isArmed
+            armSwitch.setOnCheckedChangeListener { _, _ -> viewModel.toggleArm() }
+        }
+
         latestCommandText.text = state.main.lastCommandText
         commandLogText.text = state.main.commandLogText
+
+        bleStateText.text = state.ble.stateText
+        bleDeviceText.text = state.ble.connectedDeviceName ?: "未接続"
+        bleToggleButton.text = state.ble.toggleButtonLabel
     }
 
     private fun syncText(editText: com.google.android.material.textfield.TextInputEditText, value: String) {
         if (editText.text?.toString() != value) {
             editText.setText(value)
             editText.setSelection(editText.text?.length ?: 0)
+        }
+    }
+
+    private fun requestBlePermissionsOrToggle() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val permissions = arrayOf(
+                Manifest.permission.BLUETOOTH_ADVERTISE,
+                Manifest.permission.BLUETOOTH_CONNECT,
+            )
+            val allGranted = permissions.all {
+                ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+            }
+            if (allGranted) {
+                viewModel.toggleBle()
+            } else {
+                blePermissionLauncher.launch(permissions)
+            }
+        } else {
+            viewModel.toggleBle()
         }
     }
 }

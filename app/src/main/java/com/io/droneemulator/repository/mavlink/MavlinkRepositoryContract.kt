@@ -18,5 +18,7 @@ interface MavlinkRepositoryContract {
     fun updateAltitudeMeters(value: Float)
 
     fun updateBatteryPercent(value: Int)
+
+    fun updateArmed(value: Boolean)
 }
 
