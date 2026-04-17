@@ -26,13 +26,14 @@ object MavlinkEncoder {
         systemId: Int = DefaultSystemId,
         componentId: Int = DefaultComponentId,
     ): ByteArray {
+        val baseMode = if (telemetryState.isArmed) (0x51 or 0x80).toByte() else 0x51.toByte()
         val payload = ByteBuffer.allocate(9)
             .order(ByteOrder.LITTLE_ENDIAN)
             .apply {
                 putInt(0)
                 put(2)
                 put(3)
-                put(0x51)
+                put(baseMode)
                 put(4)
                 put(3)
             }

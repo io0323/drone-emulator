@@ -13,10 +13,10 @@ class DroneEmulatorViewModelTest {
     fun fake_repository_connect_updates_connection_state() = runBlocking {
         val repository = FakeMavlinkRepository()
 
-        repository.connect(localPort = 14560, remoteHost = "10.0.2.2", remotePort = 14550)
+        repository.connect(localPort = 14560, remoteHost = "192.168.3.11", remotePort = 14540)
 
-        assertEquals(ConnectionState.Connected(14560, "10.0.2.2", 14550), repository.connectionState.value)
-        assertEquals(FakeMavlinkRepository.ConnectionRequest(14560, "10.0.2.2", 14550), repository.connectCalls.single())
+        assertEquals(ConnectionState.Connected(14560, "192.168.3.11", 14540), repository.connectionState.value)
+        assertEquals(FakeMavlinkRepository.ConnectionRequest(14560, "192.168.3.11", 14540), repository.connectCalls.single())
     }
 
     @Test
@@ -32,9 +32,9 @@ class DroneEmulatorViewModelTest {
 
     @Test
     fun telemetry_formatter_formats_labels_and_empty_log() {
-        val connected = ConnectionState.Connected(localPort = 14560, remoteHost = "10.0.2.2", remotePort = 14550)
+        val connected = ConnectionState.Connected(localPort = 14560, remoteHost = "192.168.3.11", remotePort = 14540)
 
-        assertTrue(TelemetryFormatter.connectionLabel(connected).contains("10.0.2.2:14550"))
+        assertTrue(TelemetryFormatter.connectionLabel(connected).contains("192.168.3.11:14540"))
         assertEquals("12.5 m", TelemetryFormatter.altitudeLabel(12.5f))
         assertEquals("まだ受信コマンドはありません", TelemetryFormatter.commandLog(emptyList()))
         assertFalse(TelemetryFormatter.connectionStatus(ConnectionState.Disconnected).contains("接続中"))

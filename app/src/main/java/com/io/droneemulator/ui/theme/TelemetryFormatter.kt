@@ -61,6 +61,18 @@ object TelemetryFormatter {
     fun batterySliderValue(telemetryState: TelemetryState): Float = telemetryState.batteryPercent.toFloat()
 
     fun batteryPercent(telemetryState: TelemetryState): Int = telemetryState.batteryPercent
+
+    fun armLabel(isArmed: Boolean): String = if (isArmed) "ARM" else "DISARM"
+
+    fun bleStateText(state: com.io.droneemulator.model.BleState): String = when (state) {
+        com.io.droneemulator.model.BleState.Idle -> "停止中"
+        com.io.droneemulator.model.BleState.Advertising -> "アドバタイズ中"
+        is com.io.droneemulator.model.BleState.Connected -> "接続中: ${state.deviceName}"
+        is com.io.droneemulator.model.BleState.Error -> "エラー: ${state.message}"
+    }
+
+    fun bleToggleLabel(state: com.io.droneemulator.model.BleState): String =
+        if (state == com.io.droneemulator.model.BleState.Idle) "アドバタイズ開始" else "停止"
 }
 
 

@@ -44,6 +44,10 @@ class FakeMavlinkRepository(
         (telemetryState as MutableStateFlow).value = telemetryState.value.copy(batteryPercent = value)
     }
 
+    override fun updateArmed(value: Boolean) {
+        (telemetryState as MutableStateFlow).value = telemetryState.value.copy(isArmed = value)
+    }
+
     fun emitCommand(command: ReceivedCommand) {
         commandFlow.tryEmit(command)
     }

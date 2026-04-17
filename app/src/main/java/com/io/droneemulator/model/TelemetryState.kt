@@ -12,5 +12,6 @@ data class TelemetryState(
     val velocityXMetersPerSecond: Float = 0.0f,
     val velocityYMetersPerSecond: Float = 0.0f,
     val velocityZMetersPerSecond: Float = 0.0f,
+    val isArmed: Boolean = false,
 )
 
