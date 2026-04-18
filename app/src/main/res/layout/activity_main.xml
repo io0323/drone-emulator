@@ -31,6 +31,163 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/connectionInfoCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="#CC1A1A1A"
+            app:cardCornerRadius="8dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="drone-controller への接続設定"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:alpha="0.7" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Remote Host"
+                        android:textColor="#FFAAAAAA"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/infoRemoteHostValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        tools:text="192.168.3.11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Remote Port"
+                        android:textColor="#FFAAAAAA"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/infoRemotePortValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        tools:text="14550" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Local Port"
+                        android:textColor="#FFAAAAAA"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/infoLocalPortValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        tools:text="14560" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#44FFFFFF" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="このデバイスの情報"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:alpha="0.7" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="IPアドレス"
+                        android:textColor="#FFAAAAAA"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/infoDeviceIpValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        tools:text="192.168.3.50" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="UDPポート"
+                        android:textColor="#FFAAAAAA"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/infoUdpPortValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="12sp"
+                        tools:text="14560" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/connectionCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -182,7 +339,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    tools:text="local:14560 -> 192.168.3.11:14540" />
+                    tools:text="local:14560 -> 192.168.3.11:14550" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/disconnectButton"

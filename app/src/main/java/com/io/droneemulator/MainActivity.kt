@@ -1,7 +1,9 @@
 package com.io.droneemulator
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -47,8 +49,17 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        binding.infoDeviceIpValue.text = getWifiIpAddress()
         bindInputs()
         observeUiState()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getWifiIpAddress(): String {
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val ip = wifiManager.connectionInfo.ipAddress
+        if (ip == 0) return "未取得"
+        return String.format("%d.%d.%d.%d", ip and 0xff, ip shr 8 and 0xff, ip shr 16 and 0xff, ip shr 24 and 0xff)
     }
 
     private fun bindInputs() = with(binding) {
@@ -99,6 +110,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun render(state: DroneEmulatorUiState) = with(binding) {
+        infoRemoteHostValue.text = state.connection.remoteHostText
+        infoRemotePortValue.text = state.connection.remotePortText
+        infoLocalPortValue.text = state.connection.localPortText
+        infoUdpPortValue.text = state.connection.localPortText
+
         connectionCard.isVisible = state.connection.isVisible
         mainCard.isVisible = state.main.isVisible
 

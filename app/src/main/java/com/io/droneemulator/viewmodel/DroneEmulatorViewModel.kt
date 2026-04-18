@@ -35,7 +35,7 @@ class DroneEmulatorViewModel(
 
     private val localPort = MutableStateFlow("14560")
     private val remoteHost = MutableStateFlow("192.168.3.11")
-    private val remotePort = MutableStateFlow("14540")
+    private val remotePort = MutableStateFlow("14550")
     private val validationMessage = MutableStateFlow<String?>(null)
     private val commandSummaries = MutableStateFlow<List<String>>(emptyList())
     private val _isMockMode = MutableStateFlow(false)
