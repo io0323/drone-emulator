@@ -16,7 +16,7 @@ Android 用の簡易ドローンエミュレータです。MAVLink v1 を UDP So
 
 - Local Port: `14560`
 - Remote Host: `192.168.3.11`
-- Remote Port: `14540`
+- Remote Port: `14550`
 
 ## テスト
 
